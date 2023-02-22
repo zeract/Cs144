@@ -1,8 +1,8 @@
 #ifndef SPONGE_LIBSPONGE_BYTE_STREAM_HH
 #define SPONGE_LIBSPONGE_BYTE_STREAM_HH
 
+#include <deque>
 #include <string>
-
 //! \brief An in-order byte stream.
 
 //! Bytes are written on the "input" side and read from the "output"
@@ -11,7 +11,12 @@
 class ByteStream {
   private:
     // Your code here -- add private members as necessary.
-
+    size_t _capacity = 0;
+    bool _eof = false;  //判断是否到文件终点
+    bool _eoi = false;  //判断是否输入到终点
+    mutable std::deque<char> _queue;
+    size_t _write_count = 0;
+    size_t _read_count = 0;
     // Hint: This doesn't need to be a sophisticated data structure at
     // all, but if any of your tests are taking longer than a second,
     // that's a sign that you probably want to keep exploring
