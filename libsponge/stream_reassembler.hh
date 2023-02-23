@@ -5,13 +5,21 @@
 
 #include <cstdint>
 #include <string>
+#include <vector>
+struct store_data{
+  size_t index;
+  std::string _queue;
+};
 
 //! \brief A class that assembles a series of excerpts from a byte stream (possibly out of order,
 //! possibly overlapping) into an in-order byte stream.
 class StreamReassembler {
   private:
     // Your code here -- add private members as necessary.
-
+    size_t _current_index=0; //!< 现在的最后一位索引号
+    size_t _eof_index=0;
+    bool _eof=false;
+    std::vector<struct store_data> _store={};  //!<  存储未排列的字符流
     ByteStream _output;  //!< The reassembled in-order byte stream
     size_t _capacity;    //!< The maximum number of bytes
 

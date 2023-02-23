@@ -41,7 +41,7 @@ class ByteStream {
 
     //! Signal that the byte stream has reached its ending
     void end_input();
-
+    void set_eof() { _eof=true; }
     //! Indicate that the stream suffered an error.
     void set_error() { _error = true; }
     //!@}
