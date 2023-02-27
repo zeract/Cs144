@@ -69,11 +69,39 @@ size_t StreamReassembler::unassembled_bytes() const {
     if(_store.empty()){
         return 0;
     }
-    
-    size_t min = _store[0].index;
-    size_t max = _store[0].index+_store[0]._queue.length();
-    vec.push_back({min,max});
+    std::vector<Interval> intervals={};
+    //size_t min = _store[0].index;
+    //size_t max = _store[0].index+_store[0]._queue.length();
+    //intervals.push_back({min,max});
     for(auto str:_store){
+        intervals.push_back({str.index,str.index+str._queue.length()});
+    }
+    size_t total = 0;
+    int n = intervals.size();
+    if (n == 0) return total;
+
+    // 将所有区间按起始地址从小到大排序
+    std::sort(intervals.begin(), intervals.end(), [](const Interval& a, const Interval& b) {
+        return a.start < b.start;
+    });
+
+    // 合并所有重叠的区间
+    size_t currStart = intervals[0].start;
+    size_t currEnd = intervals[0].end;
+    for (int i = 1; i < n; i++) {
+        if (intervals[i].start <= currEnd) {
+            currEnd = std::max(currEnd, intervals[i].end);
+        } else {
+            total += currEnd - currStart;
+            currStart = intervals[i].start;
+            currEnd = intervals[i].end;
+        }
+    }
+    total += currEnd - currStart ;
+
+    return total;
+    //vec.push_back({min,max});
+    /* for(auto str:_store){
         if(str.index<min){
             min = str.index;
         }
@@ -84,7 +112,7 @@ size_t StreamReassembler::unassembled_bytes() const {
     if(min<_current_index){
         min = _current_index;
     }
-    return max-min; 
+    return max-min;  */
     }
 
 size_t StreamReassembler::ackno()const{

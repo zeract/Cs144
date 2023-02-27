@@ -2,7 +2,7 @@
 #define SPONGE_LIBSPONGE_STREAM_REASSEMBLER_HH
 
 #include "byte_stream.hh"
-
+#include <algorithm>
 #include <cstdint>
 #include <string>
 #include <vector>
@@ -10,7 +10,11 @@ struct store_data {
     size_t index;
     std::string _queue;
 };
-
+struct Interval {
+    size_t start;
+    size_t end;
+    Interval(size_t s, size_t e) : start(s), end(e) {}
+};
 //! \brief A class that assembles a series of excerpts from a byte stream (possibly out of order,
 //! possibly overlapping) into an in-order byte stream.
 class StreamReassembler {
