@@ -5,7 +5,7 @@
 #include "stream_reassembler.hh"
 #include "tcp_segment.hh"
 #include "wrapping_integers.hh"
-
+#include <vector>
 #include <optional>
 
 //! \brief The "receiver" part of a TCP implementation.
@@ -14,6 +14,13 @@
 //! the acknowledgment number and window size to advertise back to the
 //! remote TCPSender.
 class TCPReceiver {
+
+    //ISN
+    WrappingInt32 isn=WrappingInt32(0);
+    //ISN是否设置
+    bool _set_isn = false;
+    bool _set_fin = false;
+    //std::vector<TCPSegment> _store ={};
     //! Our data structure for re-assembling bytes.
     StreamReassembler _reassembler;
 
